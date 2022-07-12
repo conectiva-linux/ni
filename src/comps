@@ -1,0 +1,564 @@
+
+
+# Last_update 20010627 - Rudá Moura <ruda@conectiva.com.br>
+
+Core="\
+	basesystem \
+	bash \
+	bdflush \
+	bzip2 \
+	chkconfig \
+	console-tools \
+	console-tools-fonts \
+	console-tools-keymaps \
+	cracklib \
+	cracklib-dicts \
+	dev \
+	e2fsprogs \
+	ed \
+	etcskel \
+	filesystem \
+	fileutils \
+	gawk \
+	gettext \
+	glib \
+	glibc-base \
+	glibc-i18n-en \
+	grep \
+	grub \
+	gzip \
+	info \
+	initscripts \
+	kernel \
+	ldconfig \
+	lilo \
+	losetup \
+	MAKEDEV \
+	mingetty \
+	mktemp \
+	modutils \
+	mount \
+	ncurses \
+	net-tools \
+	pam \
+	passwd \
+	popt \
+	procps \
+	psmisc \
+	pwdb \
+	reiserfs-utils \
+	rootfiles \
+	rpm \
+	sed \
+	setup \
+	shadow-utils \
+	sh-utils \
+	slang \
+	SysVinit \
+	tar \
+	textutils \
+	util-linux \
+	zlib \
+"
+
+Base="\
+	$Core \
+	apt \
+	at \
+	authconfig \
+	conectiva-release \
+	cpio \
+	crontabs \
+	doc-licenses \
+	eject \
+	file \
+	findutils \
+	finger \
+	ftp \
+	gdbm \
+	groff \
+	initscripts-translations \
+	isapnptools \
+	kbdconfig \
+	kernel-pcmcia-cs \
+	kudzu \
+	less \
+	libstdc++ \
+	linuxconf \
+	linuxconf \
+	linuxconf-Xkbdconf \
+	linuxconf-grubconf \
+	linuxconf-gurus \
+	linuxconf-kbdconf \
+	linuxconf-liloconf \
+	linuxconf-managerpm \
+	linuxconf-modemconf \
+	linuxconf-mouseconf \
+	linuxconf-redhatppp \
+	linuxconf-status \
+	linuxconf-syslogconf \
+	linuxconf-treemenu \
+	linuxconf-userinfo \
+	linuxconf-vregistry \
+	logrotate \
+	mailcap \
+	man \
+	memtest86 \
+	mkbootdisk \
+	mkinitrd \
+	mouseconfig \
+	mtools \
+	netkit-base \
+	newt \
+	ntsysv \
+	pciutils \
+	pump \
+	raidtools \
+	readline \
+	slocate \
+	sndconfig \
+	stat \
+	sysklogd \
+	task-config-tools \
+	tcp_wrappers \
+	tcsh \
+	timeconfig \
+	tmpwatch \
+	vim-minimal \
+	vixie-cron \
+	which \
+"
+
+# Utils
+
+Lynx="\
+	indexhtml \
+	lynx \
+"
+
+Vim="\
+	vim-common \
+	vim-help \
+	vim-minimal \
+	vim-syntax \
+"
+
+Mail_Client_Tools="\
+	fetchmail \
+	postfix \
+	mailx \
+	mutt \
+	procmail \
+"
+
+Console_Applications="\
+	$Base \
+	$Lynx \
+	$Vim \
+	$Mail_Client_Tools \
+	aumix \
+	bind-utils \
+	diffutils \
+	gnupg \
+	gpm \
+	mc \
+	ncftp \
+	nfs-utils \
+	openssl \
+	perl \
+	ppp \
+	python \
+	telnet \
+	ypbind \
+	yp-tools \
+"
+
+Extra_Documentation="\
+	$Base \
+	man-pages \
+	man-pages-pt_BR \
+	man-pages-es \
+	doc-usuario \
+"
+
+# Development
+
+C_Development="\
+	$Base \
+	autoconf   \
+	automake   \
+	bin86   \
+	binutils   \
+	bison   \
+	byacc   \
+	cpp   \
+	ctags   \
+	diffutils   \
+	flex   \
+	gcc   \
+	glib-devel   \
+	glibc-devel   \
+	kernel-headers   \
+	libtool   \
+	m4   \
+	make   \
+	ncurses-devel   \
+	patch   \
+	slang-devel   \
+	task-c-devel \
+	texinfo   \
+	zlib-devel   \
+"
+
+CPP_Development="\
+	$Base \
+	$C_Development \
+	gcc-c++   \
+	libstdc++-devel   \
+	task-c-devel \
+	task-c++-devel \
+"
+
+Debug_Tools="\
+	$Base \
+	ElectricFence   \
+	gdb   \
+	lslk   \
+	lsof   \
+	ltrace   \
+	strace   \
+	task-debug \
+	time   \
+"
+
+# Servers
+
+Basic_Server="\
+	$Base \
+	bind \
+	bind-utils \
+	caching-nameserver \
+	openssh \
+	openssh-clients \
+	openssh-server \
+	openssl \
+"
+
+File_Server_Unix_Support="\
+	$Basic_Server \
+	nfs-utils \
+	portmap \
+"
+
+File_Server_Windows_Support="\
+	$Basic_Server \
+	cups-libs \
+	samba \
+	samba-clients \
+"
+
+File_Server_Netware_Support="\
+	$Basic_Server \
+	ipxutils \
+	mars-nwe \
+	ncpfs \
+"
+
+File_Server_AppleTalk_Support="\
+	$Basic_Server \
+        netatalk
+"
+
+File_Server_All_in_One="\
+	$File_Server_Unix_Support \
+	$File_Server_Windows_Support \
+	$File_Server_Netware_Support \
+	$File_Server_AppleTalk_Support \
+"
+
+FTP_Server="\
+	$Basic_Server \
+	anonftp \
+	wu-ftpd \
+"
+
+Web_Server="\
+	$Basic_Server \
+	apache \
+	apache-devel \
+	apache-doc \
+	mod_auth_ldap \
+	mod_auth_mysql \
+	mod_auth_pgsql \
+	mod_auth_radius \
+	mod_dav \
+	mod_fastcgi \
+	mod_php4 \
+	mod_roaming \
+	mod_throttle \
+	openssl \
+	perl \
+	perl-bin \
+	perl-HTML-Parser \
+	perl-libwww-perl \
+	php4 \
+	php4-doc \
+	webalizer \
+	weblint \
+	webxref \
+"
+
+Print_Server="\
+	$Basic_Server \
+	chkfontpath \
+	ghostscript \
+	ghostscript-fonts \
+	linuxconf-printer \
+	LPRng \
+	mpage \
+	rhs-printfilters \
+"
+
+Mail_Server="\
+	$Basic_Server \
+	fetchmail \
+	imap \
+	mailx \
+	metamail \
+	procmail \
+	postfix \
+	sharutils \
+"
+
+Data_Base_Server="\
+	$Basic_Server \
+	postgresql \
+	postgresql-clients \
+	postgresql-devel \
+	postgresql-doc \
+	postgresql-lib \
+"
+
+Router_Firewall="\
+	$Basic_Server \
+	gated \
+	ipchains \
+	mtr \
+	traceroute \
+"
+
+High_Availability="\
+	$Basic_Server \
+	drbd-utils \
+	fping \
+	heartbeat \
+	heartbeat-ldirectord \
+	heartbeat-stonith \
+	linuxconf-cl_ha_conf \
+	linuxconf-drbdconf \
+	linuxconf-heartbeatconf \
+	mon \
+	mon-perl \
+	reiserfs-utils \
+	task-ha \
+"
+
+Remote_Boot_Server="\
+	$Basic_Server \
+	$File_Server_Unix_Support \
+	dhcp \
+	etherboot \
+	etherboot-netboot \
+	ippl \
+	iptraf \
+	linuxconf-cnc_rbc \
+	nscd \
+	pidentd \
+	tcpdump \
+	tftp \
+	traceroute \
+	ttcp \
+	ypserv \
+"
+
+Linuxconf_Modules="\
+	linuxconf-accountbatch \
+	linuxconf-apache \
+	linuxconf-aptconf \
+	linuxconf-cl_ha_conf \
+	linuxconf-cnc_rbc \
+	linuxconf-devel \
+	linuxconf-dhcpd \
+	linuxconf-dialout \
+	linuxconf-dnsconf \
+	linuxconf-drbdconf \
+	linuxconf-fetchmailconf \
+	linuxconf-firewall \
+	linuxconf-fsbrowser \
+	linuxconf-grubconf \
+	linuxconf-gurus \
+	linuxconf-heartbeatconf \
+	linuxconf-inetdconf \
+	linuxconf-inittab \
+	linuxconf-ircdconf \
+	linuxconf-isapnpconf \
+	linuxconf-kernelconf \
+	linuxconf-lib \
+	linuxconf-liloconf \
+	linuxconf-mailconf \
+	linuxconf-managerpm \
+	linuxconf-mgettyconf \
+	linuxconf-modemconf \
+	linuxconf-motd \
+	linuxconf-mrtg \
+	linuxconf-netadm \
+	linuxconf-opensshd \
+	linuxconf-postfixconf \
+	linuxconf-pppdialin \
+	linuxconf-pppoe \
+	linuxconf-printer \
+	linuxconf-pslaveconf \
+	linuxconf-rarp \
+	linuxconf-redhatppp \
+	linuxconf-samba \
+	linuxconf-shellmod \
+	linuxconf-squid \
+	linuxconf-status \
+	linuxconf-syslogconf \
+	linuxconf-tcptool \
+	linuxconf-treemenu \
+	linuxconf-userinfo \
+	linuxconf-usermenu \
+	linuxconf-uucp \
+	linuxconf-vregistry \
+	linuxconf-wuftpd \
+"
+
+# X11
+
+X_Window_System="\
+	$Base \
+	XFree86 \
+	XFree86-75dpi-fonts \
+	XFree86-Server \
+	XFree86-libs \
+	XFree86-vesa \
+	XFree86-vga \
+	Xaw3d \
+	Xconfigurator \
+	menu \
+	task-x-window-system \
+	urw-fonts \
+	xscripts \
+"
+
+WindowMaker="\
+	$X_Window_System \
+	WSoundPrefs   \
+	WSoundServer   \
+	WSoundServer-data   \
+	WindowMaker   \
+	mountapp   \
+	task-windowmaker \
+	wmCalClock   \
+	wmconfig   \
+"
+
+Gnome="\
+	$X_Window_System \
+	gdm \
+	gnome-applets \
+	gnome-audio \
+	gnome-audio-extra \
+	gnome-core \
+	gnome-games \
+	gnome-libs \
+	gnome-media \
+	gnome-network \
+	gnome-objc \
+	gnome-pim \
+	gnome-print \
+	gnome-utils \
+	nautilus \
+	sawfish \
+	task-gnome \
+	xalf \
+"
+
+KDE="\
+	$X_Window_System \
+	kde-i18n-es \
+	kde-i18n-pt_BR \
+	kdeadmin \
+	kdebase \
+	kdegames \
+	kdegraphics \
+	kdelibs \
+	kdemultimedia \
+	kdenetwork \
+	kdesupport \
+	kdeutils \
+	task-kde \
+"
+
+Qvwm="\
+	$X_Window_System \
+	LinNeighborhood \
+	qvwm \
+	task-qvwm \
+	xwc \
+"
+
+# X11 apps
+
+Desktop_Applications="\
+	$X_Window_System \
+	ee \
+	gedit \
+	gmc \
+	gnome-linuxconf \
+	gv \
+	licq \
+	soffice52-wrapper \
+	synaptic \
+	xchat \
+	xmms \
+	xscreensaver \
+"
+
+Netscape="\
+	$X_Window_System \
+	indexhtml \
+	netscape-common \
+	netscape-communicator \
+"
+
+Gimp="\
+	$X_Window_System \
+	gimp \
+	gimp-data-extras \
+	gimp-perl \
+"
+
+KOffice="\
+	$X_Window_System \
+	koffice \
+"
+
+# And_finally...
+
+Conectiva_Standard_Distribution="\
+	$Base \
+	$Console_Applications \
+	$Extra_Documentation \
+	$C_Development \
+	$Print_Server \
+	$X_Window_System \
+	$WindowMaker \
+	$Qvwm \
+	$Desktop_Applications \
+	$Netscape \
+	$Gimp \
+	$KDE \
+	$KOffice \
+"

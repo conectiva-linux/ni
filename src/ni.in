@@ -1,0 +1,170 @@
+#!/bin/sh
+#
+# ni: a Conectiva Linux chroot installator (aka NULL Installer)
+#
+# (C) 2001 by Ruda Moura <ruda@conectiva.com.br>
+
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+# 02111-1307, USA.
+
+NI_VERSION=@VERSION@
+NI_SYSCONFDIR=@SYSCONFDIR@
+NI_DATADIR=@DATADIR@
+
+. $NI_SYSCONFDIR/ni.conf
+
+# RPM with chroot
+rpm_flags="--root $NI_TARGETDIR $NI_RPM"
+rpm="rpm $rpm_flags"
+
+# APT with chroot
+apt_flags="\
+-o RPM::RootDir=$NI_TARGETDIR/ \
+-o RPM::AutoRebuildDB=false \
+-o Dir::State=$NI_TARGETDIR/var/state/apt \
+-o Dir::State::Status=$NI_TARGETDIR/var/lib/rpm \
+-o Dir::Cache=$NI_TARGETDIR/var/cache/apt $NI_APT"
+apt_get="apt-get $apt_flags"
+
+# Messages
+usage="\
+ni $NI_VERSION (c) 2001 by Ruda Moura <ruda@conectiva.com.br>
+usage: ni <action> [options] -- 'ni help' for more information"
+help="\
+$usage
+NI (NULL Installer) is a Conectiva Linux chroot installer.
+
+  Action	Description
+  ------	-----------
+  create	creates a new chroot installation at $NI_TARGETDIR
+  		(without packages installed).
+  destroy	destroy a chroot.
+  rpm		do something with rpm.
+  apt-get	do something with apt-get.
+  group		install a group of packages -- see $NI_DATADIR/comps
+  init		initialize a new chroot.
+  help		this help message.
+
+Example 1:
+  ni create				# create a new installation
+  ni apt-get update			# update apt's cache
+  ni apt-get install basesystem		# must be the first package installed
+  ni apt-get install initscripts	# required by kernel
+  ni group Base				# every group depends on Base
+
+Example 2:
+  ni init				# do the same as Example 1 (shortcut)
+  ni group C_Development		# install group C 
+  ni rpm -qa				# list packages already installed
+"
+
+error()
+{
+	echo "error: $*"
+	exit 1
+}
+
+create()
+{
+	# RPM
+	install -d $NI_TARGETDIR/var/lib/rpm
+	$rpm --initdb
+
+	# APT
+	install -d $NI_TARGETDIR/var/state/apt/lists/partial
+	install -d $NI_TARGETDIR/var/cache/apt/archives/partial
+
+	# /etc
+	install -d $NI_TARGETDIR/etc
+	install -m 644 $NI_DATADIR/etc_fstab $NI_TARGETDIR/etc/fstab
+	install -m 644 $NI_DATADIR/etc_hosts $NI_TARGETDIR/etc/hosts
+	# /etc/sysconfig
+	install -d $NI_TARGETDIR/etc/sysconfig
+	sed "s|@ZONE@|$NI_ZONE|g" $NI_DATADIR/etc_sysconfig_clock > \
+		$NI_TARGETDIR/etc/sysconfig/clock
+	sed "s|@LANG@|$NI_LANG|g" $NI_DATADIR/etc_sysconfig_i18n > \
+		$NI_TARGETDIR/etc/sysconfig/i18n
+}
+
+destroy()
+{
+	umount $NI_TARGETDIR/proc
+	umount $NI_TARGETDIR/dev/pts
+	rm -rf $NI_TARGETDIR
+}
+
+init()
+{
+	create
+	$apt_get update
+	$apt_get -y install basesystem
+	$apt_get -y install initscripts
+	assume_yes="-y" group Base
+}
+
+group()
+{
+	. $NI_DATADIR/comps
+
+	for i in $* ; do
+		p=$(eval echo \$$i)
+		if [ -z "$p" ] ; then
+			error "$i is not a group."
+		fi
+	done
+	for i in $* ; do
+		p=$(eval echo \$$i)
+
+		# kernel is a special case
+		if [ $(getconf _NPROCESSORS_ONLN) = 1 ] ; then
+			k="kernel"
+		else
+			k="kernel-smp"
+		fi
+
+		q=$(echo $p | sed "s/ kernel / $k#.* /g")
+		$apt_get $assume_yes install $q
+	done
+}
+
+case $1 in
+create)
+	create
+	;;
+destroy)
+	destroy
+	;;
+rpm)
+	shift
+	$rpm $*
+	;;
+apt-get)
+	shift
+	$apt_get $*
+	;;
+group)
+	shift
+	group $*
+        ;;
+init)
+	init
+	;;
+help)
+	echo "$help"
+	;;
+*)
+	echo "$usage"
+	;;
+esac

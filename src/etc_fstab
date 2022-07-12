@@ -1,0 +1,2 @@
+# Device	Mount point	Type	Options		Freq	Check
+none		/proc		proc	defaults	0	0
